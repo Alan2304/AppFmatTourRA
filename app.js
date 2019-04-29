@@ -1,8 +1,24 @@
-var express = require('express');
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const {mongoose} = require('./db');
+const {Marker} = require('./models/Marker');
+
 var app = express();
 
+app.use(bodyParser.json());
+
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    console.log("Hello world");
+    
+});
+
+app.post('/Marker', (req, res) => {
+    
+});
+
+app.get('/Marker/:id', (req, res) => {
+
 });
 
 app.listen(3000, () => {

@@ -7,7 +7,6 @@ var MarkerSchema = new mongoose.Schema({
         {
             name: String,
             description: String,
-            date: Date
         }
     ],
     right: String,

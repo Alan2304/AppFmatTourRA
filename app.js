@@ -14,7 +14,19 @@ app.get('/', (req, res) => {
 });
 
 app.post('/Marker', (req, res) => {
-    
+    var marker = new Marker({
+        name: req.body.name,
+        description: req.body.Description,
+        events: req.body.events,
+        right: req.body.right,
+        left: req.body.left
+    });
+    marker.save().then((doc) => {
+        console.log(doc);
+        res.send(doc);
+    }, (e) => {
+        res.status(400).send(e);
+    });
 });
 
 app.get('/Marker/:id', (req, res) => {

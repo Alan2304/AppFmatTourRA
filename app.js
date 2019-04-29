@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const {mongoose} = require('./db');
+const {ObjectID} = require('mongodb');
 const {Marker} = require('./models/Marker');
 
 var app = express();
@@ -30,7 +31,20 @@ app.post('/Marker', (req, res) => {
 });
 
 app.get('/Marker/:id', (req, res) => {
+    var id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
 
+    Marker.findOne({_id: id}).then((marker) => {
+        if (!marker) {
+            return res.status(404).send();
+        }
+
+        res.send({marker});
+    }).catch((e) => {
+        res.status(400).send();
+    });
 });
 
 app.listen(3000, () => {

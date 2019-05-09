@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
@@ -60,6 +61,31 @@ app.get('/Marker', (req, res) => {
     }).catch((e) => {
         res.status(400).send();
     })
+});
+
+app.put('/Marker/:id', async (req, res) => {
+    var id = req.params.id;
+    var body = req.body;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    let marker = await Marker.findOne({_id: id});
+
+    if (marker) {
+        marker.name = body.name;
+        marker.description = body.description;
+        marker.events = body.events;
+        marker.right = body.right;
+        marker.left = body.left;
+        marker.save().then((result) => {
+            res.send(result);
+        }).catch((err) => {
+            res.status(400).send()
+        })
+    }else{
+        res.status(404).send();
+    }
 });
 
 app.listen(3000, () => {

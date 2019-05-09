@@ -9,6 +9,13 @@ var app = express();
 
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+  
+
 app.get('/', (req, res) => {
     console.log("Hello world");
     
@@ -41,10 +48,18 @@ app.get('/Marker/:id', (req, res) => {
             return res.status(404).send();
         }
 
-        res.send({marker});
+        res.send(marker);
     }).catch((e) => {
         res.status(400).send();
     });
+});
+
+app.get('/Marker', (req, res) => {
+    Marker.find({}).then((markers) => {
+        res.send(markers);
+    }).catch((e) => {
+        res.status(400).send();
+    })
 });
 
 app.listen(3000, () => {

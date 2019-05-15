@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const {mongoose} = require('./db');
-const {ObjectID} = require('mongodb');
-const {Marker} = require('./models/Marker');
+const { mongoose } = require('./db');
+const { ObjectID } = require('mongodb');
+const { Marker } = require('./models/Marker');
 
 var app = express();
+
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -14,12 +16,12 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-  });
-  
+});
+
 
 app.get('/', (req, res) => {
     console.log("Hello world");
-    
+
 });
 
 app.post('/Marker', (req, res) => {
@@ -44,7 +46,7 @@ app.get('/Marker/:id', (req, res) => {
         return res.status(404).send();
     }
 
-    Marker.findOne({_id: id}).then((marker) => {
+    Marker.findOne({ _id: id }).then((marker) => {
         if (!marker) {
             return res.status(404).send();
         }
@@ -70,7 +72,7 @@ app.put('/Marker/:id', async (req, res) => {
         return res.status(404).send();
     }
 
-    let marker = await Marker.findOne({_id: id});
+    let marker = await Marker.findOne({ _id: id });
 
     if (marker) {
         marker.name = body.name;
@@ -83,11 +85,11 @@ app.put('/Marker/:id', async (req, res) => {
         }).catch((err) => {
             res.status(400).send()
         })
-    }else{
+    } else {
         res.status(404).send();
     }
 });
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('Start listen on Port 3000');
 })

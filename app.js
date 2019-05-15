@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 app.post('/Marker', (req, res) => {
     var marker = new Marker({
         name: req.body.name,
-        description: req.body.Description,
+        description: req.body.description,
         events: req.body.events,
         right: req.body.right,
         left: req.body.left
